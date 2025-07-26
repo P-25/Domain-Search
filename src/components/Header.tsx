@@ -1,0 +1,46 @@
+import { HeaderProps } from "@/interfaces";
+import React, { useEffect, useState } from "react";
+import { Badge } from "./ui/badge";
+
+const Header: React.FC<HeaderProps> = ({ setDrawerOpen, cart }) => {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) return null;
+  return (
+    <header className="flex items-center justify-between px-8 py-5 border-b bg-white/80 shadow-sm sticky top-0 z-10">
+      <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
+        Domain Search
+      </h1>
+      <button
+        className="relative p-2 rounded-full hover:bg-orange-100 transition cursor-pointer"
+        onClick={() => setDrawerOpen(true)}
+        aria-label="Open cart"
+      >
+        <svg
+          width="28"
+          height="28"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 48 48"
+        >
+          <g data-name="troley">
+            <path d="M15 39a3 3 0 1 0 3-3 3 3 0 0 0-3 3zm4 0a1 1 0 1 1-1-1 1 1 0 0 1 1 1zM31 39a3 3 0 1 0 3-3 3 3 0 0 0-3 3zm4 0a1 1 0 1 1-1-1 1 1 0 0 1 1 1z" />
+            <circle cx="28.55" cy="20.55" r="1.45" />
+            <path d="M23.45 16.9A1.45 1.45 0 1 0 22 15.45a1.45 1.45 0 0 0 1.45 1.45zM23 22a1 1 0 0 0 .71-.29l6-6a1 1 0 0 0-1.42-1.42l-6 6a1 1 0 0 0 0 1.42A1 1 0 0 0 23 22z" />
+            <path d="M7 10a1 1 0 0 0 1-1 1 1 0 0 1 1-1h2.26l5.4 17.27 1.38 5A1 1 0 0 0 19 31h13a1 1 0 0 1 0 2H20a1 1 0 0 0 0 2h12a3 3 0 0 0 0-6H19.76l-.83-3h13.54a6.92 6.92 0 0 0 3.58-1 7 7 0 0 0 3-3.46 6.45 6.45 0 0 0 .21-.62L42 11.27a1 1 0 0 0-.16-.87A1 1 0 0 0 41 10H14l-1-3.3a1 1 0 0 0-1-.7H9a3 3 0 0 0-3 3 1 1 0 0 0 1 1zm32.67 2L38 18l-.68 2.37A5 5 0 0 1 32.47 24H18.36l-1.87-6-1.88-6z" />
+          </g>
+        </svg>
+        {cart.length > 0 && (
+          <Badge className="absolute -top-2 -right-2 bg-orange-500 text-white border-none shadow">
+            {cart.length}
+          </Badge>
+        )}
+      </button>
+    </header>
+  );
+};
+
+export default Header;
