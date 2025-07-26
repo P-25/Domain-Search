@@ -2,7 +2,13 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { CartDrawerProps } from "@/interfaces";
 import React from "react";
 import { Button } from "./ui/button";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "./ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "./ui/drawer";
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
   cart,
@@ -12,20 +18,22 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 }) => {
   const { formatPrice, getNumericPrice } = useCurrency();
   const subtotal = cart.reduce(
-    (sum, d) => sum + getNumericPrice(d.price || "0"),
+    (sum, domain) => sum + getNumericPrice(domain.price || "0"),
     0
   );
 
   return (
     <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} direction="right">
-      <DrawerContent className="max-w-sm w-full ml-auto rounded-l-2xl shadow-2xl bg-white/95 border-l-4 border-orange-200 h-screen flex flex-col">
+      <DrawerContent className="max-w-sm w-full ml-auto bg-white h-screen flex flex-col">
         <DrawerHeader className="pb-2 border-b border-orange-100">
           <div className="flex items-center justify-between">
             <DrawerTitle className="text-2xl font-bold text-gray-900">
-              {cart.length} item added to cart
+              <DrawerDescription>
+                {cart.length ? `${cart.length} item in cart` : "Cart"}
+              </DrawerDescription>
             </DrawerTitle>
             <button
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none cursor-pointer"
+              className="text-gray-500 hover:text-gray-800 text-2xl font-bold focus:outline-none cursor-pointer"
               onClick={() => setDrawerOpen(false)}
               aria-label="Close cart"
             >
@@ -33,40 +41,40 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </button>
           </div>
         </DrawerHeader>
+
         <div className="flex-1 flex flex-col gap-3 p-4 overflow-y-auto">
           {cart.length === 0 ? (
             <p className="text-muted-foreground text-center py-8">
               No domains in cart.
             </p>
           ) : (
-            cart.map((d) => (
-              <div key={d.name} className="flex items-center w-full border p-4">
+            cart.map((domain) => (
+              <div
+                key={domain.name}
+                className="flex items-center w-full border p-4"
+              >
                 <div className="flex items-center gap-3 w-full">
-                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4 text-orange-500"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
                   <div className="flex flex-col w-full">
-                    <div className="flex flex-row justify-between text-gray-900">
-                      <p>{d.name}</p>
+                    <div className="flex flex-row justify-between text-gray-900 relative">
+                      <p className="font-semibold text-orange-500">
+                        {domain.name}
+                      </p>
                       <span className="font-semibold text-gray-900">
-                        {formatPrice(d.price || "0")}
+                        {formatPrice(domain.price || "0")}
                       </span>
+                      <button
+                        className="absolute top-[-17px] right-[-10px] text-gray-500 font-bold focus:outline-none sm:hidden"
+                        onClick={() => removeFromCart(domain.name)}
+                        aria-label="remove-from-cart"
+                      >
+                        &times;
+                      </button>
                     </div>
                     <div className="flex flex-row justify-between text-sm text-gray-500">
                       <p>Domain Name Registration</p>
                       <button
-                        className="text-orange-400 hover:text-orange-500 cursor-pointer"
-                        onClick={() => removeFromCart(d.name)}
+                        className="text-orange-400 hover:text-orange-500 cursor-pointer hidden sm:block"
+                        onClick={() => removeFromCart(domain.name)}
                       >
                         remove
                       </button>
@@ -77,6 +85,48 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             ))
           )}
         </div>
+
+        {cart.length > 0 && (
+          <div className="border-t pt-4 mt-4 flex flex-col gap-3 px-4 pb-6">
+            <div>
+              <div className="flex justify-between font-semibold text-lg text-black">
+                <span>Subtotal:</span>
+                {cart.length >= 3 ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="line-through text-gray-500 text-sm">
+                      {formatPrice(subtotal)}
+                    </span>
+                    <span>{formatPrice(subtotal * 0.8)}</span>
+                  </div>
+                ) : (
+                  <span>{formatPrice(subtotal * 0.8)}</span>
+                )}
+              </div>
+              <div>
+                {cart.length < 3 ? (
+                  <p className="text-yellow-700 text-xs sm:text-md mt-1">
+                    Add {3 - cart.length} more domain
+                    {3 - cart.length !== 1 ? "s" : ""} to get 20% off
+                  </p>
+                ) : (
+                  <span className="text-green-700 text-sm mt-1">
+                    You&apos;re saving {formatPrice(subtotal * 0.2)} with 20%
+                    off
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="w-full border-orange-300 text-white hover:bg-text-white hover:bg-orange-400 font-semibold rounded-lg bg-orange-500"
+                onClick={() => setDrawerOpen(false)}
+              >
+                CONTINUE SHOPPING
+              </Button>
+            </div>
+          </div>
+        )}
       </DrawerContent>
     </Drawer>
   );

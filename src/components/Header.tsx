@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({ setDrawerOpen, cart }) => {
 
   if (!hasMounted) return null;
   return (
-    <header className="flex items-center justify-between px-8 py-5 border-b bg-white/80 shadow-sm sticky top-0 z-10">
+    <header className="flex items-center justify-between px-4 py-5 border-b bg-white shadow-sm sticky top-0 z-10">
       <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
         Domain Search
       </h1>

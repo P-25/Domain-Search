@@ -113,7 +113,7 @@ export default function Home() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header setDrawerOpen={setDrawerOpen} cart={cart} />
       <main className="flex-1 flex flex-col items-center justify-start p-4">
-        <div className="w-full max-w-2xl mx-auto text-center mt-12 mb-8">
+        <div className="w-full max-w-2xl mx-auto text-center mt-8 mb-8">
           <h2 className="text-4xl font-bold mb-2 text-gray-900">
             Search available domain names
           </h2>
@@ -124,6 +124,15 @@ export default function Home() {
             error={error}
             isLoading={isLoading}
           />
+          {/* {!isLoading && !formattedSearchedDomain && ( */}
+          <div className="border-gray-200 pt-4">
+            <div className="bg-orange-100 text-orange-500 text-sm sm:text-base font-semibold w-full px-4 py-2 text-center rounded">
+              🎁 <span className="font-bold">Bundle & Save!</span> Get{" "}
+              <span className="underline">20% off</span> when you buy{" "}
+              <span className="font-bold">3+ domains</span>.
+            </div>
+          </div>
+          {/* )} */}
         </div>
         <DomainSuggestions
           suggestions={suggestions}
@@ -132,7 +141,7 @@ export default function Home() {
           searchedDomain={formattedSearchedDomain}
           domainAvailability={domainAvailability}
           isLoading={isLoading}
-          openCartDrawer={openCartDrawer}
+          removeFromCart={removeFromCart}
         />
       </main>
       <CartDrawer

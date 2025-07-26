@@ -20,10 +20,10 @@ export interface DomainSuggestionsProps {
   suggestions: DomainSuggestion[];
   cart: DomainSuggestion[];
   toggleCart: (domain: DomainSuggestion) => void;
+  removeFromCart: (name: string) => void;
   searchedDomain: string | null;
   domainAvailability: boolean | null;
   isLoading: boolean;
-  openCartDrawer: () => void;
 }
 
 export interface SearchFormProps {
@@ -40,7 +40,7 @@ export interface DomainAvailabilityProps {
   toggleCart: (domain: DomainSuggestion) => void;
   cart: DomainSuggestion[];
   suggestion: DomainSuggestion | undefined;
-  openCartDrawer: () => void;
+  removeFromCart: (name: string) => void;
 }
 
 export type SearchDomainResponse = {

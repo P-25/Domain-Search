@@ -8,10 +8,10 @@ export const DomainSuggestions: React.FC<DomainSuggestionsProps> = ({
   suggestions,
   cart,
   toggleCart,
+  removeFromCart,
   searchedDomain,
   domainAvailability,
   isLoading,
-  openCartDrawer,
 }) => {
   const { formatPrice } = useCurrency();
   if (isLoading) return <div>Loading...</div>;
@@ -20,6 +20,7 @@ export const DomainSuggestions: React.FC<DomainSuggestionsProps> = ({
   const mainDomain = suggestions.find(
     (suggestion) => suggestion.name === searchedDomain
   );
+
   return (
     <div className="w-full max-w-2xl mx-auto">
       <DomainAvailability
@@ -28,13 +29,13 @@ export const DomainSuggestions: React.FC<DomainSuggestionsProps> = ({
         toggleCart={toggleCart}
         cart={cart}
         suggestion={mainDomain}
-        openCartDrawer={openCartDrawer}
+        removeFromCart={removeFromCart}
       />
       <div className="bg-white border border-gray-200 rounded-xl shadow p-0 mb-8">
-        <div className="px-6 pt-6 pb-2 font-semibold text-gray-800 text-lg">
+        <div className="px-4 sm:px-6 pt-6 pb-2 font-semibold text-gray-800 text-lg">
           Suggested domain names
         </div>
-        <div className="px-6 pb-4 text-gray-500 text-sm">
+        <div className="px-4 sm:px-6 pb-4 text-gray-500 text-sm">
           The following is a list of suggestions that may be available.
         </div>
         <div className="divide-y divide-gray-100">
@@ -47,9 +48,9 @@ export const DomainSuggestions: React.FC<DomainSuggestionsProps> = ({
             return (
               <div
                 key={suggestion.name}
-                className={`flex items-center justify-between py-4 px-6 hover:bg-orange-50 transition `}
+                className={`flex flex-col sm:flex-row sm:items-center justify-between py-4 px-4 sm:px-6 hover:bg-orange-50 transition gap-2 sm:gap-0 `}
               >
-                <div className="flex flex-col gap-1">
+                <div className="flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-1">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-base text-gray-900">
                       {suggestion.name}
@@ -59,7 +60,7 @@ export const DomainSuggestions: React.FC<DomainSuggestionsProps> = ({
                     Renews at {formatPrice(suggestion.renewal || "0")}
                   </span>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-row items-center justify-between sm:justify-start sm:gap-4">
                   <span className="font-semibold text-base text-gray-900">
                     {formatPrice(suggestion.price || "0")}
                   </span>
@@ -67,10 +68,10 @@ export const DomainSuggestions: React.FC<DomainSuggestionsProps> = ({
                     <Button
                       size="sm"
                       variant="secondary"
-                      className="bg-orange-500 border-orange-500 text-white hover:bg-orange-400 hover:text-white px-6 font-semibold uppercase tracking-wide"
-                      onClick={openCartDrawer}
+                      className="bg-orange-500 border-orange-500 text-white hover:bg-orange-400 hover:text-white px-6 font-semibold uppercase tracking-wide w-[150px]"
+                      onClick={() => removeFromCart(suggestion.name)}
                     >
-                      Open Basket
+                      Remove
                     </Button>
                   ) : (
                     <Button

@@ -16,20 +16,21 @@ const SearchForm: React.FC<SearchFormProps> = ({
       autoComplete="off"
     >
       <div className="flex flex-row w-full">
-        <div className="flex items-center flex-1 bg-white border border-orange-500 px-3 py-2 text-lg shadow-sm h-12">
+        <div className="flex items-center flex-1 bg-white border border-orange-500 px-3 py-2 text-md sm:text-lg shadow-sm h-12 w-[60%] sm:w-auto">
           <input
             type="text"
             placeholder="Find your perfect domain"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="flex-1 outline-none bg-transparent text-lg text-black"
+            id="domain-search"
             autoFocus
           />
         </div>
         <Button
           type="submit"
           disabled={isLoading}
-          className="rounded-none rounded-r-lg px-8 py-3 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white shadow transition h-12 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-[100px] rounded-none rounded-r-lg px-4 sm:px-8 py-3 font-semibold bg-orange-500 hover:bg-orange-600 text-white  h-12 disabled:opacity-100"
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
